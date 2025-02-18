@@ -31,6 +31,10 @@ public class BookService {
     }
 
     public Book getBookById(Integer bookId) throws BookNotFound {
+
+        if(bookId == null) {
+            throw new BookNotFound(bookId);
+        }
         
         Optional<Book> optionalBook = this.bookRepository.findById(bookId);
         if(optionalBook.isEmpty()) {
@@ -47,10 +51,6 @@ public class BookService {
 
     public Book updateBookById(Integer bookId, UpdateBookRequestDto updateBookRequestDto) {
 
-        if(bookId == null) {
-            throw new BookNotFound(bookId);
-        }
-
         Book book = getBookById(bookId);
         book.setAuthor(updateBookRequestDto.getAuthor());
         book.setGenre(updateBookRequestDto.getGenre());
@@ -60,10 +60,6 @@ public class BookService {
     }
 
     public void deleteBookById(Integer bookId) {
-        
-        if(bookId == null) {
-            throw new BookNotFound(bookId);
-        }
 
         Book book = getBookById(bookId);
         this.bookRepository.delete(book);
